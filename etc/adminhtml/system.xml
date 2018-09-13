@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="mageworx" sortOrder="2001">
+            <label>MageWorx</label>
+        </tab>
+        <section id="mageworx_searchsuite" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+            <label>SearchSuite</label>
+            <tab>mageworx</tab>
+            <resource>MageWorx_SearchSuiteAutocomplete::config_searchsuiteautocomplete</resource>
+            <group id="searchsuiteautocomplete_main" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Autocomplete Configuration</label>
+                <field id="search_delay" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label><![CDATA[Search Delay]]></label>
+                    <validate>validate-zero-or-greater integer</validate>
+                </field>
+                <field id="autocomplete_fields" translate="label" type="multiselect" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label><![CDATA[Show Fields In Popup]]></label>
+                    <source_model>MageWorx\SearchSuiteAutocomplete\Model\Source\AutocompleteFields</source_model>
+                </field>
+                <field id="suggested_result_number" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label><![CDATA[Number of Results Suggested Search]]></label>
+                    <validate>validate-zero-or-greater integer</validate>
+                </field>
+                <field id="product_result_number" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label><![CDATA[Number of Results Product Search]]></label>
+                    <validate>validate-zero-or-greater integer</validate>
+                    <comment><![CDATA[Empty or 0 value displays all search results.]]></comment>
+                </field>
+                <field id="product_result_fields" translate="label" type="multiselect" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label><![CDATA[Product Search Result Fields]]></label>
+                    <source_model>MageWorx\SearchSuiteAutocomplete\Model\Source\ProductFields</source_model>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

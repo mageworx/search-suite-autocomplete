@@ -1,0 +1,243 @@
+form.minisearch.loading .control input[type="text"] {
+    box-shadow: none;
+    -webkit-animation-name: search-loading; /* Chrome, Safari, Opera */
+    -webkit-animation-duration: 3s; /* Chrome, Safari, Opera */
+    -webkit-animation-iteration-count: infinite; /* Chrome, Safari, Opera */
+    animation-name: search-loading;
+    animation-duration: 3s;
+    animation-iteration-count: infinite;
+}
+
+/* Chrome, Safari, Opera */
+@-webkit-keyframes search-loading {
+    0%   {box-shadow: none;}
+    25%   {box-shadow: 0 0 3px 1px #68a8e0;}
+    50%   {box-shadow: 0 0 3px 1px #ffffff;}
+    75%   {box-shadow: 0 0 3px 1px #68a8e0;}
+    100%   {box-shadow: none;}
+}
+
+/* Standard syntax */
+@keyframes search-loading {
+    0%   {box-shadow: none;}
+    25%   {box-shadow: 0 0 3px 1px #68a8e0;}
+    50%   {box-shadow: 0 0 3px 1px #ffffff;}
+    75%   {box-shadow: 0 0 3px 1px #68a8e0;}
+    100%   {box-shadow: none;}
+}
+
+.searchsuite-autocomplete {
+    background-color: #fff;
+    border: 1px solid #c2c2c2;
+    box-shadow: 0 3px 3px rgba(0, 0, 0, 0.15);
+    left: -85px;
+    margin-top: 4px;
+    width: 350px;
+    position: absolute;
+    z-index: 9999999;
+}
+.searchsuite-autocomplete .suggest,
+.searchsuite-autocomplete .product {
+    margin: 0;
+}
+
+.searchsuite-autocomplete.active,
+.searchsuite-autocomplete .suggest.active,
+.searchsuite-autocomplete .product.active {
+    display: block;
+}
+
+.searchsuite-autocomplete .suggest {
+    color: #3C3C3C;
+}
+
+.searchsuite-autocomplete .title {
+    padding: 10px;
+    margin-bottom: 5px;
+    background: #f0f0f0;
+    color: #575757;
+}
+
+.searchsuite-autocomplete .title .see-all {
+    display: inline-block;
+    float: right;
+    color: #909090;
+    cursor: pointer;
+}
+
+.searchsuite-autocomplete .no-result {
+    padding: 10px;
+    background: #f0f0f0;
+    color: #575757;
+    text-align: center;
+}
+
+.searchsuite-autocomplete ul {
+    padding: 0 10px;
+    margin-bottom: 0;
+    list-style-type: none;
+}
+
+.searchsuite-autocomplete ul li {
+    color: #000;
+    cursor: unset;
+    padding: 0;
+}
+
+.searchsuite-autocomplete .suggest ul li {
+    color: #3C3C3C;
+}
+
+.searchsuite-autocomplete .product ul li {
+    border-bottom: 1px solid #D4D2D2;
+}
+.searchsuite-autocomplete .product ul li:last-child {
+    border-bottom: none;
+}
+
+.searchsuite-autocomplete ul li:hover,
+.searchsuite-autocomplete ul li.selected {
+    background-color: #fff;
+}
+
+.searchsuite-autocomplete ul li:after {
+    clear: both;
+    content: '';
+    display: block;
+}
+
+.searchsuite-autocomplete ul li.action {
+    padding: 0;
+}
+
+.searchsuite-autocomplete ul li.action .action.close {
+    background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
+    border: 0 none;
+    box-shadow: none;
+    box-sizing: content-box;
+    cursor: pointer;
+    display: inline-block;
+    float: right;
+    font-weight: 400;
+    height: 30px;
+    line-height: inherit;
+    margin: 0;
+    padding: 0;
+    right: 0;
+    text-decoration: none;
+    text-shadow: none;
+    top: 0;
+    width: 40px;
+}
+
+.searchsuite-autocomplete ul li.action .action.close:before {
+    color: #8f8f8f;
+    content: '\e616';
+    display: inline-block;
+    font-family: 'luma-icons';
+    font-size: 16px;
+    font-weight: normal;
+    margin: 0;
+    overflow: hidden;
+    text-align: center;
+    vertical-align: top;
+}
+
+.searchsuite-autocomplete ul li.gray-row {
+    text-align: center;
+}
+
+.searchsuite-autocomplete ul li.gray-row,
+.searchsuite-autocomplete ul li.gray-row:hover,
+.searchsuite-autocomplete ul li.gray-row.selected {
+    background-color: #e8e8e8;
+}
+
+.searchsuite-autocomplete ul li.gray-row a {
+    color: #7B7B7B;
+    text-decoration: blink;
+}
+
+.searchsuite-autocomplete ul li a {
+    cursor: pointer;
+}
+
+.searchsuite-autocomplete ul li .qs-option-image {
+    float: left;
+    max-width: 82px;
+    width: 25%;
+}
+
+.searchsuite-autocomplete ul li .qs-option-info {
+    color: #000;
+    display: inline-block;
+    float: left;
+    padding-left: 5%;
+    text-align: left;
+    width: 70%;
+    margin-bottom: 10px;
+}
+
+.searchsuite-autocomplete ul li .qs-option-info.noimage {
+    padding-left: 0;
+    width: 100%;
+}
+.searchsuite-autocomplete ul li:last-child .qs-option-info {
+    margin-bottom: 0;
+}
+
+.searchsuite-autocomplete ul li .qs-option-info .qs-option-title {
+    display: inline-block;
+    margin: 0;
+    width: 100%;
+}
+
+.searchsuite-autocomplete ul li .qs-option-info .qs-option-reviews {
+    display: inline-block;
+    text-transform: lowercase;
+    width: 100%;
+}
+
+.searchsuite-autocomplete ul li .qs-option-info .qs-option-reviews .product-reviews-summary {
+    margin-bottom: 4px;
+}
+
+.searchsuite-autocomplete ul li .qs-option-info .qs-option-reviews .reviews-actions {
+    font-size: 12px;
+}
+
+.searchsuite-autocomplete ul li .qs-option-info .qs-option-sku {
+    display: block;
+    width: 100%;
+    color: #004875;
+    font-size: 12px;
+}
+
+.searchsuite-autocomplete ul li .qs-option-info .qs-option-shortdescription,
+.searchsuite-autocomplete ul li .qs-option-info .qs-option-description {
+    color: #3C3C3C;
+    font-size: 13px;
+}
+
+
+.searchsuite-autocomplete ul li .qs-option-info .qs-option-price {
+    display: inline-block;
+    font-weight: bold;
+    margin-top: 15px;
+}
+
+.searchsuite-autocomplete ul li .qs-option-info .qs-option-addtocart {
+    display: inline-block;
+    float: right;
+    margin-top: 10px;
+}
+
+@media only screen and (max-width: 767px) {
+    .searchsuite-autocomplete {
+        border-top: 0;
+        left: 15px;
+        margin-top: 0;
+        right: 15px;
+        width: auto;
+    }
+}

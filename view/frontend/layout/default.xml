@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <css src="MageWorx_SearchSuiteAutocomplete::css/searchsuiteautocomplete.css"/>
+    </head>
+    <body>
+        <referenceBlock name="top.search">
+            <block class="MageWorx\SearchSuiteAutocomplete\Block\Autocomplete" name="mageworx-search-autocomplete-wrapper" template="MageWorx_SearchSuiteAutocomplete::autocomplete.phtml"/>
+        </referenceBlock>
+    </body>
+</page>

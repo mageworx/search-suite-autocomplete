@@ -1,0 +1,28 @@
+{
+    "name": "mageworx/module-searchsuiteautocomplete",
+    "description": "Search Suite Autocomplete extension by MageWorx for Magento 2",
+    "require": {
+        "magento/framework": ">=100.0.0 <102",
+        "magento/module-catalog": ">=100.0.0 <103",
+        "magento/module-search": ">=100.0.0 <101"
+    },
+    "type": "magento2-module",
+    "version": "2.1.4",
+    "license": "GPL-3.0",
+    "authors": [
+        {
+            "name": "MageWorx",
+            "email": "support@mageworx.com",
+            "homepage": "https://www.mageworx.com",
+            "role": "Technical Support"
+        }
+    ],
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "MageWorx\\SearchSuiteAutocomplete\\": ""
+        }
+    }
+}
