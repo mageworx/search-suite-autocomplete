@@ -17,8 +17,7 @@ Autocomplete functionality provides the intuitive search experience and instantl
 **Including product details (product image, SKU, price, reviews/ratings, etc.)**  
 **"Add to Cart" button right in the search results**  
 
-## How to install GDPR for Magento 2
-
+## How to install Search Suite Autocomplete for Magento 2
 
 ### Install via composer (recommend)
 Run the following command in Magento 2 root folder:
