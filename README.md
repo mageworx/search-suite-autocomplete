@@ -52,14 +52,17 @@ Please get in touch with us via the [issue tracker on GitHub](https://github.com
   - 5.6.x
   - 7.0.x
   - 7.1.x
+  - 7.2.x
 - Magento CE: 
   - 2.0.x
   - 2.1.x
   - 2.2.x
+  - 2.3.x
 - Magento EE:
   - 2.0.x
   - 2.1.x
   - 2.2.x
+  - 2.3.x
   
 - Operating System: Linux
 
