@@ -1,0 +1,73 @@
+#mw-promo-banner .mw-container {
+    display: flex;
+    box-sizing: border-box;
+    background: linear-gradient(to right, #ee7d06, #fb9c37);
+    font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    padding: 20px 30px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+#mw-promo-banner .mw-container__left {
+    flex: 1 1 25%;
+}
+#mw-promo-banner .mw-container__center {
+    flex: 2 1 50%;
+}
+#mw-promo-banner .mw-container__right {
+    flex-grow: 1 1 25%;
+    text-align: center;
+}
+#mw-promo-banner .mw-container__right .mw-banner__content {
+    line-height: 1;
+    margin-bottom: 10px;
+}
+@media screen and (max-width: 767px) {
+    #mw-promo-banner .mw-container .mw-container__left, #mw-promo-banner .mw-container .mw-container__right, #mw-promo-banner .mw-container .mw-container__center {
+        flex-basis: 100%;
+        text-align: left;
+        margin-bottom: 10px;
+    }
+}
+#mw-promo-banner .mw-banner__percent {
+    width: 100%;
+    font-size: 90px;
+    font-weight: 400;
+    color: #fff;
+    text-shadow: 4px 2px 0px rgba(0, 0, 0, 0.2);
+    letter-spacing: 2px;
+}
+#mw-promo-banner .mw-banner__content, #mw-promo-banner .mw-banner__researcher {
+    font-size: 16px;
+    color: #fff;
+    line-height: 2;
+    margin: 0;
+}
+#mw-promo-banner .mw-banner__link {
+    color: #514942;
+    text-decoration: underline;
+    font-size: 16px;
+}
+#mw-promo-banner .mw-banner__link:hover {
+    text-decoration: none;
+}
+#mw-promo-banner .mw-banner__code {
+    margin: 0;
+}
+#mw-promo-banner .mw-banner__button {
+    display: inline-block;
+    margin: 0;
+    background-color: #514942;
+    white-space: nowrap;
+    text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.2);
+    color: #fff;
+    text-decoration: none;
+    padding: 15px 30px;
+    transition: opacity 0.3s ease-in;
+}
+#mw-promo-banner .mw-banner__button:hover {
+    opacity: 0.9;
+}
+#mw-promo-banner .mw-banner__code {
+    margin-bottom: 10px;
+    color: #fff;
+}
