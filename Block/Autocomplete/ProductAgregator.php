@@ -85,11 +85,7 @@ class ProductAgregator extends \Magento\Framework\DataObject
      */
     public function getName()
     {
-        return $this->catalogHelperOutput->productAttribute(
-            $this->getProduct(),
-            $this->getProduct()->getName(),
-            'name'
-        );
+        return strip_tags(html_entity_decode($this->getProduct()->getName()));
     }
 
     /**
