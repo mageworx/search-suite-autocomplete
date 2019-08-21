@@ -117,8 +117,8 @@ class Product implements \MageWorx\SearchSuiteAutocomplete\Model\SearchInterface
                                                  ->addAttributeToSelect(
                                                      [ProductFields::DESCRIPTION, ProductFields::SHORT_DESCRIPTION]
                                                  )
+                                                 ->setPageSize($productResultNumber)
                                                  ->addSearchFilter($queryText);
-        $productCollection->getSelect()->limit($productResultNumber);
 
         return $productCollection;
     }
