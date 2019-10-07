@@ -25,15 +25,20 @@ class SearchResult implements SearchInterface
     }
 
     /**
-     * @param $search
-     * @return false|string
+     * @param string $search
+     * @return mixed|string
      * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
     public function getSearchResult($search)
     {
-        $url = $this->_storeManager->getStore()->getBaseUrl() . self::SEARCH_AUTOCOMPLETE_URL . $search;
-        $contents = file_get_contents($url);
-        $result = json_decode($contents, true);
+        $uri = $this->_storeManager->getStore()->getBaseUrl() . self::SEARCH_AUTOCOMPLETE_URL . $search;
+        $request = new \Zend\Http\Request();
+        $request->setUri($uri);
+        $request->setMethod(\Zend\Http\Request::METHOD_GET);
+
+        $client = new \Zend\Http\Client();
+        $response = $client->send($request);
+        $result = json_decode($response->getBody(), true);
 
         return $result;
     }
