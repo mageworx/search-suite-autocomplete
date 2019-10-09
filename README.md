@@ -23,7 +23,7 @@ Autocomplete functionality provides the intuitive search experience and instantl
 Run the following command in Magento 2 root folder:
 
 ```
-composer require mageworx/module-searchsuiteautocompletemeta
+composer require mageworx/module-searchsuiteautocomplete
 php bin/magento setup:upgrade
 php bin/magento setup:static-content:deploy
 ```
