@@ -131,21 +131,24 @@ class Product implements \MageWorx\SearchSuiteAutocomplete\Model\SearchInterface
      */
     protected function getProductData($product)
     {
-        /** @var \MageWorx\SearchSuiteAutocomplete\Block\Autocomplete\Product $product */
-        $product = $this->objectManager->create('MageWorx\SearchSuiteAutocomplete\Block\Autocomplete\ProductAgregator')
+        /** @var \MageWorx\SearchSuiteAutocomplete\Block\Autocomplete\ProductAgregator $productAgregator */
+        $productAgregator = $this->objectManager->create('MageWorx\SearchSuiteAutocomplete\Block\Autocomplete\ProductAgregator')
                                        ->setProduct($product);
 
         $data = [
-            ProductFields::NAME              => $product->getName(),
-            ProductFields::SKU               => $product->getSku(),
-            ProductFields::IMAGE             => $product->getSmallImage(),
-            ProductFields::REVIEWS_RATING    => $product->getReviewsRating(),
-            ProductFields::SHORT_DESCRIPTION => $product->getShortDescription(),
-            ProductFields::DESCRIPTION       => $product->getDescription(),
-            ProductFields::PRICE             => $product->getPrice(),
-            ProductFields::ADD_TO_CART       => $product->getAddToCartData(),
-            ProductFields::URL               => $product->getUrl()
+            ProductFields::NAME              => $productAgregator->getName(),
+            ProductFields::SKU               => $productAgregator->getSku(),
+            ProductFields::IMAGE             => $productAgregator->getSmallImage(),
+            ProductFields::REVIEWS_RATING    => $productAgregator->getReviewsRating(),
+            ProductFields::SHORT_DESCRIPTION => $productAgregator->getShortDescription(),
+            ProductFields::DESCRIPTION       => $productAgregator->getDescription(),
+            ProductFields::PRICE             => $productAgregator->getPrice(),
+            ProductFields::URL               => $productAgregator->getUrl()
         ];
+
+        if ($product->getData('is_salable')) {
+            $data[ProductFields::ADD_TO_CART] = $productAgregator->getAddToCartData();
+        }
 
         return $data;
     }
