@@ -103,7 +103,7 @@ class Product implements \MageWorx\SearchSuiteAutocomplete\Model\SearchInterface
     /**
      * Retrive product collection by query text
      *
-     * @param  string $queryText
+     * @param string $queryText
      * @return mixed
      */
     protected function getProductCollection($queryText)
@@ -118,6 +118,8 @@ class Product implements \MageWorx\SearchSuiteAutocomplete\Model\SearchInterface
                                                      [ProductFields::DESCRIPTION, ProductFields::SHORT_DESCRIPTION]
                                                  )
                                                  ->setPageSize($productResultNumber)
+                                                 ->addAttributeToSort('relevance')
+                                                 ->setOrder('relevance')
                                                  ->addSearchFilter($queryText);
 
         return $productCollection;
@@ -132,8 +134,10 @@ class Product implements \MageWorx\SearchSuiteAutocomplete\Model\SearchInterface
     protected function getProductData($product)
     {
         /** @var \MageWorx\SearchSuiteAutocomplete\Block\Autocomplete\ProductAgregator $productAgregator */
-        $productAgregator = $this->objectManager->create('MageWorx\SearchSuiteAutocomplete\Block\Autocomplete\ProductAgregator')
-                                       ->setProduct($product);
+        $productAgregator = $this->objectManager->create(
+            'MageWorx\SearchSuiteAutocomplete\Block\Autocomplete\ProductAgregator'
+        )
+                                                ->setProduct($product);
 
         $data = [
             ProductFields::NAME              => $productAgregator->getName(),
