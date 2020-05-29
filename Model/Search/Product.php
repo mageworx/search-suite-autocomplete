@@ -2,6 +2,7 @@
 
 namespace MageWorx\SearchSuiteAutocomplete\Model\Search;
 
+use Magento\Store\Model\StoreManagerInterface;
 use \MageWorx\SearchSuiteAutocomplete\Helper\Data as HelperData;
 use \Magento\Search\Helper\Data as SearchHelper;
 use \Magento\Catalog\Model\Layer\Resolver as LayerResolver;
@@ -9,6 +10,7 @@ use \Magento\Framework\ObjectManagerInterface as ObjectManager;
 use \Magento\Search\Model\QueryFactory;
 use \MageWorx\SearchSuiteAutocomplete\Model\Source\AutocompleteFields;
 use \MageWorx\SearchSuiteAutocomplete\Model\Source\ProductFields;
+use \Magento\Review\Model\ResourceModel\Review\SummaryFactory;
 
 /**
  * Product model. Return product data used in search autocomplete
@@ -41,8 +43,20 @@ class Product implements \MageWorx\SearchSuiteAutocomplete\Model\SearchInterface
     private $queryFactory;
 
     /**
+     * @var SummaryFactory
+     */
+    private $sumResourceFactory;
+
+    /**
+     * @var StoreManagerInterface
+     */
+    protected $storeManager;
+
+    /**
      * Product constructor.
      *
+     * @param StoreManagerInterface $storeManager
+     * @param SummaryFactory $sumResourceFactory
      * @param HelperData $helperData
      * @param SearchHelper $searchHelper
      * @param LayerResolver $layerResolver
@@ -50,17 +64,21 @@ class Product implements \MageWorx\SearchSuiteAutocomplete\Model\SearchInterface
      * @param QueryFactory $queryFactory
      */
     public function __construct(
+        StoreManagerInterface $storeManager,
+        SummaryFactory $sumResourceFactory,
         HelperData $helperData,
         SearchHelper $searchHelper,
         LayerResolver $layerResolver,
         ObjectManager $objectManager,
         QueryFactory $queryFactory
     ) {
-        $this->helperData    = $helperData;
-        $this->searchHelper  = $searchHelper;
-        $this->layerResolver = $layerResolver;
-        $this->objectManager = $objectManager;
-        $this->queryFactory  = $queryFactory;
+        $this->storeManager       = $storeManager;
+        $this->sumResourceFactory = $sumResourceFactory;
+        $this->helperData         = $helperData;
+        $this->searchHelper       = $searchHelper;
+        $this->layerResolver      = $layerResolver;
+        $this->objectManager      = $objectManager;
+        $this->queryFactory       = $queryFactory;
     }
 
     /**
@@ -121,8 +139,26 @@ class Product implements \MageWorx\SearchSuiteAutocomplete\Model\SearchInterface
                                                  ->addAttributeToSort('relevance')
                                                  ->setOrder('relevance')
                                                  ->addSearchFilter($queryText);
+        /** @var \Magento\Review\Model\ResourceModel\Review\Summary $sumResource */
+        $sumResource = $this->sumResourceFactory->create();
+
+        $sumResource->appendSummaryFieldsToCollection(
+            $productCollection,
+            $this->getStoreId(),
+            \Magento\Review\Model\Review::ENTITY_PRODUCT_CODE
+        );
+
 
         return $productCollection;
+    }
+
+    /**
+     * @return int
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     */
+    public function getStoreId()
+    {
+        return $this->storeManager->getStore()->getId();
     }
 
     /**

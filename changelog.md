@@ -11,3 +11,8 @@
 ### Version 2.1.10
 
 - **Fix**: Add sort order by relevance
+
+### Version 2.1.11
+
+- **Fix**: Add review summary to collection
+- **Fix**: Use product small image from cache for the search popup

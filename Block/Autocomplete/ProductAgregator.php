@@ -10,6 +10,7 @@ use \Magento\Framework\Url\Helper\Data as UrlHelper;
 use \Magento\Framework\Data\Form\FormKey;
 use \Magento\Framework\View\Asset\Repository;
 use \Magento\Framework\Escaper;
+use Magento\Catalog\Helper\ImageFactory;
 
 
 /**
@@ -50,8 +51,14 @@ class ProductAgregator extends \Magento\Framework\DataObject
     protected $escaper;
 
     /**
+     * @var ImageFactory
+     */
+    private $imageFactory;
+
+    /**
      * ProductAgregator constructor.
      *
+     * @param ImageFactory $imageFactory
      * @param ProductBlock $productBlock
      * @param StringUtils $string
      * @param UrlHelper $urlHelper
@@ -61,6 +68,7 @@ class ProductAgregator extends \Magento\Framework\DataObject
      * @param Escaper $escaper
      */
     public function __construct(
+        ImageFactory $imageFactory,
         ProductBlock $productBlock,
         StringUtils $string,
         UrlHelper $urlHelper,
@@ -69,6 +77,7 @@ class ProductAgregator extends \Magento\Framework\DataObject
         FormKey $formKey,
         Escaper $escaper
     ) {
+        $this->imageFactory        = $imageFactory;
         $this->productBlock        = $productBlock;
         $this->string              = $string;
         $this->urlHelper           = $urlHelper;
@@ -106,20 +115,10 @@ class ProductAgregator extends \Magento\Framework\DataObject
     public function getSmallImage()
     {
         $product   = $this->getProduct();
-        $url       = false;
-        $attribute = $product->getResource()->getAttribute('thumbnail');
-        if (!$product->getThumbnail() || $product->getThumbnail() == 'no_selection') {
-            $attribute = $product->getResource()->getAttribute('small_image');
-            if (!$product->getSmallImage() || $product->getSmallImage() == 'no_selection') {
-                $url = $this->assetRepo->getUrl('Magento_Catalog::images/product/placeholder/small_image.jpg');
-            } elseif ($attribute) {
-                $url = $attribute->getFrontend()->getUrl($product);
-            }
-        } elseif ($attribute) {
-            $url = $attribute->getFrontend()->getUrl($product);
-        }
 
-        return $url;
+        $image = $this->imageFactory->create()->init($product, 'product_small_image');
+
+        return $image->getUrl();
     }
 
     /**
