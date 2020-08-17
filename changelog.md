@@ -16,3 +16,7 @@
 
 - **Fix**: Add review summary to collection
 - **Fix**: Use product small image from cache for the search popup
+
+### Version 2.1.12
+- Add composer compatibility for magento 2.4
+- Remove promotion from the config setting section
