@@ -7,7 +7,7 @@
         "magento/module-search": ">=100.0.0 <102"
     },
     "type": "magento2-module",
-    "version": "2.1.12",
+    "version": "2.1.13",
     "license": "GPL-3.0",
     "authors": [
         {

@@ -20,3 +20,6 @@
 ### Version 2.1.12
 - Add composer compatibility for magento 2.4
 - Remove promotion from the config setting section
+
+### Version 2.1.13
+- **Fix** Crop HTML from product description in search popup

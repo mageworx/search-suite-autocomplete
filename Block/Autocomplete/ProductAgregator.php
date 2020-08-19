@@ -168,7 +168,7 @@ class ProductAgregator extends \Magento\Framework\DataObject
     protected function cropDescription($html)
     {
         $string = strip_tags($html);
-        $string = (strlen($string) > 50) ? $this->string->substr($string, 0, 50) . '...' : $html;
+        $string = (strlen($string) > 50) ? $this->string->substr($string, 0, 50) . '...' : $string;
 
         return $string;
     }
