@@ -94,7 +94,7 @@ class ProductAgregator extends \Magento\Framework\DataObject
      */
     public function getName()
     {
-        return strip_tags(html_entity_decode($this->getProduct()->getName()));
+        return strip_tags(html_entity_decode((string)$this->getProduct()->getName()));
     }
 
     /**
@@ -142,7 +142,7 @@ class ProductAgregator extends \Magento\Framework\DataObject
      */
     public function getShortDescription()
     {
-        $shortDescription = html_entity_decode($this->getProduct()->getShortDescription());
+        $shortDescription = html_entity_decode((string)$this->getProduct()->getShortDescription());
 
         return $this->cropDescription($shortDescription);
     }
@@ -154,7 +154,7 @@ class ProductAgregator extends \Magento\Framework\DataObject
      */
     public function getDescription()
     {
-        $description = html_entity_decode($this->getProduct()->getDescription());
+        $description = html_entity_decode((string)$this->getProduct()->getDescription());
 
         return $this->cropDescription($description);
     }

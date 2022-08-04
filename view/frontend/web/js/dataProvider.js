@@ -2,7 +2,8 @@ define([
     'jquery',
     'uiComponent',
     'uiRegistry',
-    'underscore'
+    'underscore',
+    'jquery/jquery-storageapi'
 ], function ($, Component, registry, _) {
     'use strict';
 

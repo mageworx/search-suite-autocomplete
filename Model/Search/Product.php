@@ -137,8 +137,16 @@ class Product implements \MageWorx\SearchSuiteAutocomplete\Model\SearchInterface
                                                  )
                                                  ->setPageSize($productResultNumber)
                                                  ->addAttributeToSort('relevance')
-                                                 ->setOrder('relevance')
-                                                 ->addSearchFilter($queryText);
+                                                 ->setOrder('relevance');
+
+        /**
+         * fixes a bug when re-adding a Search Filter
+         * @see \Magento\CatalogSearch\Model\Layer\Search\Plugin\CollectionFilter
+         */
+        if ($this->queryFactory->get()->isQueryTextShort()) {
+            $productCollection->addSearchFilter($queryText);
+        }
+
         /** @var \Magento\Review\Model\ResourceModel\Review\Summary $sumResource */
         $sumResource = $this->sumResourceFactory->create();
 

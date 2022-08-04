@@ -58,11 +58,13 @@ Please get in touch with us via the [issue tracker on GitHub](https://github.com
   - 2.1.x
   - 2.2.x
   - 2.3.x
+  - 2.4.x
 - Magento EE:
   - 2.0.x
   - 2.1.x
   - 2.2.x
   - 2.3.x
+  - 2.4.x
   
 - Operating System: Linux
 

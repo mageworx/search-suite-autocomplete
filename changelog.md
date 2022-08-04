@@ -23,3 +23,6 @@
 
 ### Version 2.1.13
 - **Fix** Crop HTML from product description in search popup
+
+### Version 2.1.14
+- Add compatibility with Magento 2.4.4 and Elasticsearch
