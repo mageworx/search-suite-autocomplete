@@ -14,7 +14,7 @@
     flex: 2 1 50%;
 }
 #mw-promo-banner .mw-container__right {
-    flex-grow: 1 1 25%;
+    flex-grow: 1;
     text-align: center;
 }
 #mw-promo-banner .mw-container__right .mw-banner__content {
@@ -33,7 +33,7 @@
     font-size: 90px;
     font-weight: 400;
     color: #fff;
-    text-shadow: 4px 2px 0px rgba(0, 0, 0, 0.2);
+    text-shadow: 4px 2px 0 rgba(0, 0, 0, 0.2);
     letter-spacing: 2px;
 }
 #mw-promo-banner .mw-banner__content, #mw-promo-banner .mw-banner__researcher {

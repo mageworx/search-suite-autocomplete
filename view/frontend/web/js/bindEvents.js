@@ -62,7 +62,7 @@ define([
             var self = this,
                 searchField = $(self.inputSelector),
                 searchButton = $(self.searchFormSelector + ' ' + self.searchButtonSelector),
-                searchButtonDisabled = (searchField.val().length > 0) ? false : true;
+                searchButtonDisabled = (searchField.val().length <= 0);
 
             searchButton.attr('disabled', searchButtonDisabled);
         },

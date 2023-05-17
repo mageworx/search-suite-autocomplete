@@ -4,6 +4,7 @@
 namespace MageWorx\SearchSuiteAutocomplete\Model;
 
 use Magento\Framework\ObjectManagerInterface as ObjectManager;
+use UnexpectedValueException;
 
 /**
  * SearchFactory class for Search model
@@ -11,24 +12,24 @@ use Magento\Framework\ObjectManagerInterface as ObjectManager;
 class SearchFactory
 {
     /**
-     * @var \Magento\Framework\ObjectManagerInterface
+     * @var ObjectManager|null
      */
-    protected $objectManager = null;
+    protected ?ObjectManager $objectManager = null;
 
     /**
-     * @var string
+     * @var array
      */
-    protected $map;
+    protected array $map;
 
     /**
      * Factory constructor
      *
-     * @param \Magento\Framework\ObjectManagerInterface $objectManager
+     * @param ObjectManager $objectManager
      * @param array $map
      */
     public function __construct(
         ObjectManager $objectManager,
-        array $map = []
+        array         $map = []
     ) {
         $this->objectManager = $objectManager;
         $this->map           = $map;
@@ -38,10 +39,10 @@ class SearchFactory
      *
      * @param string $param
      * @param array $arguments
-     * @return \MageWorx\SearchSuiteAutocomplete\Model\SearchInterface
-     * @throws \UnexpectedValueException
+     * @return SearchInterface
+     * @throws UnexpectedValueException
      */
-    public function create($param, array $arguments = [])
+    public function create(string $param, array $arguments = []): SearchInterface
     {
         if (isset($this->map[$param])) {
             $instance = $this->objectManager->create($this->map[$param], $arguments);
@@ -52,8 +53,8 @@ class SearchFactory
             );
         }
 
-        if (!$instance instanceof \MageWorx\SearchSuiteAutocomplete\Model\SearchInterface) {
-            throw new \UnexpectedValueException(
+        if (!$instance instanceof SearchInterface) {
+            throw new UnexpectedValueException(
                 'Class ' . get_class(
                     $instance
                 ) . ' should be an instance of \MageWorx\SearchSuiteAutocomplete\Model\SearchInterface'

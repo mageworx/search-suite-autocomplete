@@ -2,27 +2,31 @@
 
 namespace MageWorx\SearchSuiteAutocomplete\Block;
 
+use Magento\Framework\View\Element\Template;
+use Magento\Framework\View\Element\Template\Context;
+use MageWorx\SearchSuiteAutocomplete\Helper\Data;
+
 /**
  * Autocomplete class used for transport config data
  */
-class Autocomplete extends \Magento\Framework\View\Element\Template
+class Autocomplete extends Template
 {
     /**
-     * @var \MageWorx\SearchSuiteAutocomplete\Helper\Data
+     * @var Data
      */
-    protected $helperData;
+    protected Data $helperData;
 
     /**
      * Autocomplete constructor.
      *
-     * @param \MageWorx\SearchSuiteAutocomplete\Helper\Data $helperData
-     * @param \Magento\Framework\View\Element\Template\Context $context
+     * @param Data $helperData
+     * @param Context $context
      * @param array $data
      */
     public function __construct(
-        \MageWorx\SearchSuiteAutocomplete\Helper\Data $helperData,
-        \Magento\Framework\View\Element\Template\Context $context,
-        array $data = []
+        Data    $helperData,
+        Context $context,
+        array   $data = []
     ) {
 
         $this->helperData = $helperData;
@@ -34,7 +38,7 @@ class Autocomplete extends \Magento\Framework\View\Element\Template
      *
      * @return int
      */
-    public function getSearchDelay()
+    public function getSearchDelay(): int
     {
         return $this->helperData->getSearchDelay();
     }
@@ -44,7 +48,7 @@ class Autocomplete extends \Magento\Framework\View\Element\Template
      *
      * @return string
      */
-    public function getSearchUrl()
+    public function getSearchUrl(): string
     {
         return $this->getUrl("mageworx_searchsuiteautocomplete/ajax/index");
     }

@@ -31,9 +31,8 @@ define([
 
             this.anyResultCount = ko.computed(function () {
                 var sum = self.result.suggest.data().length + self.result.product.data().length;
-                if (sum > 0) {
-                    return true; }
-                return false;
+
+                return sum > 0;
             }, this);
         },
 

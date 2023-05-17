@@ -12,12 +12,12 @@ interface SearchInterface
      *
      * @return array
      */
-    public function getResponseData();
+    public function getResponseData(): array;
 
     /**
      * Check if data used in search result
      *
      * @return bool
      */
-    public function canAddToResult();
+    public function canAddToResult(): bool;
 }
