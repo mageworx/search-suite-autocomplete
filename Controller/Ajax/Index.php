@@ -2,37 +2,38 @@
 
 namespace MageWorx\SearchSuiteAutocomplete\Controller\Ajax;
 
-use \MageWorx\SearchSuiteAutocomplete\Helper\Data as HelperData;
-use \Magento\Framework\App\Action\Context;
-use \Magento\Framework\Controller\ResultFactory;
-use \Magento\Search\Model\QueryFactory;
-use \Magento\Store\Model\StoreManagerInterface;
-use \MageWorx\SearchSuiteAutocomplete\Model\Search as SearchModel;
+use Magento\Framework\App\Action\Action;
+use Magento\Framework\App\Action\Context;
+use Magento\Framework\Controller\Result\Json;
+use Magento\Framework\Controller\ResultFactory;
+use Magento\Framework\Controller\ResultInterface;
+use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Search\Model\QueryFactory;
+use Magento\Store\Model\StoreManagerInterface;
+use MageWorx\SearchSuiteAutocomplete\Helper\Data as HelperData;
+use MageWorx\SearchSuiteAutocomplete\Model\Search as SearchModel;
 
 /**
  * SearchSuiteAutocomplete ajax controller
  */
-class Index extends \Magento\Framework\App\Action\Action
+class Index extends Action
 {
     /**
-     * @var \MageWorx\SearchSuiteAutocomplete\Helper\Data
+     * @var HelperData
      */
-    protected $helperData;
-
+    protected HelperData $helperData;
     /**
-     * @var \Magento\Search\Model\QueryFactory
+     * @var StoreManagerInterface
      */
-    private $queryFactory;
-
+    protected StoreManagerInterface $storeManager;
     /**
-     * @var \Magento\Store\Model\StoreManagerInterface
+     * @var QueryFactory
      */
-    protected $storeManager;
-
+    private QueryFactory $queryFactory;
     /**
-     * @var \MageWorx\SearchSuiteAutocomplete\Model\Search
+     * @var SearchModel
      */
-    private $searchModel;
+    private SearchModel $searchModel;
 
     /**
      * Index constructor.
@@ -44,11 +45,11 @@ class Index extends \Magento\Framework\App\Action\Action
      * @param SearchModel $searchModel
      */
     public function __construct(
-        HelperData $helperData,
-        Context $context,
-        QueryFactory $queryFactory,
+        HelperData            $helperData,
+        Context               $context,
+        QueryFactory          $queryFactory,
         StoreManagerInterface $storeManager,
-        SearchModel $searchModel
+        SearchModel           $searchModel
     ) {
         $this->helperData   = $helperData;
         $this->storeManager = $storeManager;
@@ -60,22 +61,21 @@ class Index extends \Magento\Framework\App\Action\Action
     /**
      * Retrieve json of result data
      *
-     * @return array|\Magento\Framework\Controller\Result\Json
+     * @return ResultInterface
+     * @throws NoSuchEntityException
      */
-    public function execute()
+    public function execute(): ResultInterface
     {
         $query = $this->queryFactory->get();
         $query->setStoreId($this->storeManager->getStore()->getId());
 
         $responseData = [];
-
         if ($query->getQueryText() != '') {
-
             $query->setId(0)->setIsActive(1)->setIsProcessed(1);
-
             $responseData['result'] = $this->searchModel->getData();
         }
 
+        /** @var Json $resultJson */
         $resultJson = $this->resultFactory->create(ResultFactory::TYPE_JSON);
         $resultJson->setData($responseData);
 

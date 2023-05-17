@@ -2,12 +2,13 @@
 
 namespace MageWorx\SearchSuiteAutocomplete\Helper;
 
+use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Store\Model\ScopeInterface;
 
 /**
  * Search Suite Autocomplete config data helper
  */
-class Data extends \Magento\Framework\App\Helper\AbstractHelper
+class Data extends AbstractHelper
 {
     /**
      * XML config path search delay
@@ -40,25 +41,10 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
      * @param int|null $storeId
      * @return int
      */
-    public function getSearchDelay($storeId = null)
+    public function getSearchDelay(?int $storeId = null): int
     {
         return (int)$this->scopeConfig->getValue(
             self::XML_PATH_SEARCH_DELAY,
-            ScopeInterface::SCOPE_STORE,
-            $storeId
-        );
-    }
-
-    /**
-     * Retrieve comma-separated autocomplete fields
-     *
-     * @param int|null $storeId
-     * @return string
-     */
-    public function getAutocompleteFields($storeId = null)
-    {
-        return $this->scopeConfig->getValue(
-            self::XML_PATH_AUTOCOMPLETE_FIELDS,
             ScopeInterface::SCOPE_STORE,
             $storeId
         );
@@ -70,9 +56,24 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
      * @param int|null $storeId
      * @return array
      */
-    public function getAutocompleteFieldsAsArray($storeId = null)
+    public function getAutocompleteFieldsAsArray(?int $storeId = null): array
     {
         return explode(',', $this->getAutocompleteFields($storeId));
+    }
+
+    /**
+     * Retrieve comma-separated autocomplete fields
+     *
+     * @param int|null $storeId
+     * @return string
+     */
+    public function getAutocompleteFields(?int $storeId = null): string
+    {
+        return (string)$this->scopeConfig->getValue(
+            self::XML_PATH_AUTOCOMPLETE_FIELDS,
+            ScopeInterface::SCOPE_STORE,
+            $storeId
+        );
     }
 
     /**
@@ -81,7 +82,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
      * @param int|null $storeId
      * @return int
      */
-    public function getSuggestedResultNumber($storeId = null)
+    public function getSuggestedResultNumber(?int $storeId = null): int
     {
         return (int)$this->scopeConfig->getValue(
             self::XML_PATH_SUGGESTED_RESULT_NUMBER,
@@ -96,25 +97,10 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
      * @param int|null $storeId
      * @return int
      */
-    public function getProductResultNumber($storeId = null)
+    public function getProductResultNumber(?int $storeId = null): int
     {
         return (int)$this->scopeConfig->getValue(
             self::XML_PATH_PRODUCT_RESULT_NUMBER,
-            ScopeInterface::SCOPE_STORE,
-            $storeId
-        );
-    }
-
-    /**
-     * Retrieve comma-separated product result fields
-     *
-     * @param int|null $storeId
-     * @return string
-     */
-    public function getProductResultFields($storeId = null)
-    {
-        return $this->scopeConfig->getValue(
-            self::XML_PATH_PRODUCT_RESULT_FIELDS,
             ScopeInterface::SCOPE_STORE,
             $storeId
         );
@@ -126,8 +112,23 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
      * @param int|null $storeId
      * @return array
      */
-    public function getProductResultFieldsAsArray($storeId = null)
+    public function getProductResultFieldsAsArray(?int $storeId = null): array
     {
         return explode(',', $this->getProductResultFields($storeId));
+    }
+
+    /**
+     * Retrieve comma-separated product result fields
+     *
+     * @param int|null $storeId
+     * @return string
+     */
+    public function getProductResultFields(?int $storeId = null): string
+    {
+        return (string)$this->scopeConfig->getValue(
+            self::XML_PATH_PRODUCT_RESULT_FIELDS,
+            ScopeInterface::SCOPE_STORE,
+            $storeId
+        );
     }
 }

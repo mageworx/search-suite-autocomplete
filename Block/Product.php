@@ -2,31 +2,34 @@
 
 namespace MageWorx\SearchSuiteAutocomplete\Block;
 
+use Magento\Catalog\Block\Product\AbstractProduct;
+use Magento\Catalog\Model\Product as ProductModel;
+use Magento\Framework\Pricing\Render;
+
 /**
  * Product class
  */
-class Product extends \Magento\Catalog\Block\Product\AbstractProduct
+class Product extends AbstractProduct
 {
     /**
      * Return HTML block with tier price
      *
-     * @param \Magento\Catalog\Model\Product $product
+     * @param ProductModel $product
      * @param string $priceType
      * @param string $renderZone
      * @param array $arguments
      * @return string
      */
     public function getProductPriceHtml(
-        \Magento\Catalog\Model\Product $product,
-        $priceType,
-        $renderZone = \Magento\Framework\Pricing\Render::ZONE_ITEM_LIST,
-        array $arguments = []
-    ) {
+        ProductModel $product,
+                     $priceType,
+                     $renderZone = Render::ZONE_ITEM_LIST,
+        array        $arguments = []
+    ): string {
         if (!isset($arguments['zone'])) {
             $arguments['zone'] = $renderZone;
         }
 
-        /** @var \Magento\Framework\Pricing\Render $priceRender */
         $priceRender = $this->getPriceRender();
         $price       = '';
 
@@ -44,9 +47,9 @@ class Product extends \Magento\Catalog\Block\Product\AbstractProduct
     /**
      * Retrieve price render block
      *
-     * @return \Magento\Framework\Pricing\Render
+     * @return Render
      */
-    protected function getPriceRender()
+    protected function getPriceRender(): Render
     {
         return $this->_layout->createBlock(
             'Magento\Framework\Pricing\Render',

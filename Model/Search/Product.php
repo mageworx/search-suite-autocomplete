@@ -2,55 +2,62 @@
 
 namespace MageWorx\SearchSuiteAutocomplete\Model\Search;
 
+use Magento\Catalog\Model\Layer\Resolver as LayerResolver;
+use Magento\Catalog\Model\Product as ProductModel;
+use Magento\Catalog\Model\ResourceModel\Product\Collection as ProductCollection;
+use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Framework\ObjectManagerInterface as ObjectManager;
+use Magento\Review\Model\ResourceModel\Review\SummaryFactory;
+use Magento\Review\Model\Review;
+use Magento\Search\Helper\Data as SearchHelper;
+use Magento\Search\Model\QueryFactory;
 use Magento\Store\Model\StoreManagerInterface;
-use \MageWorx\SearchSuiteAutocomplete\Helper\Data as HelperData;
-use \Magento\Search\Helper\Data as SearchHelper;
-use \Magento\Catalog\Model\Layer\Resolver as LayerResolver;
-use \Magento\Framework\ObjectManagerInterface as ObjectManager;
-use \Magento\Search\Model\QueryFactory;
-use \MageWorx\SearchSuiteAutocomplete\Model\Source\AutocompleteFields;
-use \MageWorx\SearchSuiteAutocomplete\Model\Source\ProductFields;
-use \Magento\Review\Model\ResourceModel\Review\SummaryFactory;
+use MageWorx\SearchSuiteAutocomplete\Block\Autocomplete\ProductAgregator;
+use MageWorx\SearchSuiteAutocomplete\Helper\Data as HelperData;
+use MageWorx\SearchSuiteAutocomplete\Model\SearchInterface;
+use MageWorx\SearchSuiteAutocomplete\Model\Source\AutocompleteFields;
+use MageWorx\SearchSuiteAutocomplete\Model\Source\ProductFields;
 
 /**
  * Product model. Return product data used in search autocomplete
  */
-class Product implements \MageWorx\SearchSuiteAutocomplete\Model\SearchInterface
+class Product implements SearchInterface
 {
     /**
-     * @var \MageWorx\SearchSuiteAutocomplete\Helper\Data
+     * @var HelperData
      */
-    protected $helperData;
+    protected HelperData $helperData;
 
     /**
-     * @var \Magento\Search\Helper\Data
+     * @var SearchHelper
      */
-    protected $searchHelper;
+    protected SearchHelper $searchHelper;
 
     /**
-     * @var \Magento\Catalog\Model\Layer\Resolver
+     * @var LayerResolver
      */
-    protected $layerResolver;
+    protected LayerResolver $layerResolver;
 
     /**
-     * @var \Magento\Framework\ObjectManagerInterface
+     * @var ObjectManager
      */
-    protected $objectManager;
-
-    /**
-     * @var \Magento\Search\Model\QueryFactory
-     */
-    private $queryFactory;
-
-    /**
-     * @var SummaryFactory
-     */
-    private $sumResourceFactory;
+    protected ObjectManager $objectManager;
 
     /**
      * @var StoreManagerInterface
      */
-    protected $storeManager;
+    protected StoreManagerInterface $storeManager;
+
+    /**
+     * @var QueryFactory
+     */
+    private QueryFactory $queryFactory;
+
+    /**
+     * @var SummaryFactory
+     */
+    private SummaryFactory $sumResourceFactory;
 
     /**
      * Product constructor.
@@ -65,12 +72,12 @@ class Product implements \MageWorx\SearchSuiteAutocomplete\Model\SearchInterface
      */
     public function __construct(
         StoreManagerInterface $storeManager,
-        SummaryFactory $sumResourceFactory,
-        HelperData $helperData,
-        SearchHelper $searchHelper,
-        LayerResolver $layerResolver,
-        ObjectManager $objectManager,
-        QueryFactory $queryFactory
+        SummaryFactory        $sumResourceFactory,
+        HelperData            $helperData,
+        SearchHelper          $searchHelper,
+        LayerResolver         $layerResolver,
+        ObjectManager         $objectManager,
+        QueryFactory          $queryFactory
     ) {
         $this->storeManager       = $storeManager;
         $this->sumResourceFactory = $sumResourceFactory;
@@ -83,8 +90,9 @@ class Product implements \MageWorx\SearchSuiteAutocomplete\Model\SearchInterface
 
     /**
      * {@inheritdoc}
+     * @throws LocalizedException
      */
-    public function getResponseData()
+    public function getResponseData(): array
     {
         $responseData['code'] = AutocompleteFields::PRODUCT;
         $responseData['data'] = [];
@@ -119,12 +127,22 @@ class Product implements \MageWorx\SearchSuiteAutocomplete\Model\SearchInterface
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function canAddToResult(): bool
+    {
+        return in_array(AutocompleteFields::PRODUCT, $this->helperData->getAutocompleteFieldsAsArray());
+    }
+
+    /**
      * Retrive product collection by query text
      *
      * @param string $queryText
-     * @return mixed
+     * @return ProductCollection
+     * @throws LocalizedException
+     * @throws NoSuchEntityException
      */
-    protected function getProductCollection($queryText)
+    protected function getProductCollection(string $queryText): ProductCollection
     {
         $productResultNumber = $this->helperData->getProductResultNumber();
 
@@ -141,43 +159,43 @@ class Product implements \MageWorx\SearchSuiteAutocomplete\Model\SearchInterface
 
         /**
          * fixes a bug when re-adding a Search Filter
+         *
          * @see \Magento\CatalogSearch\Model\Layer\Search\Plugin\CollectionFilter
          */
         if ($this->queryFactory->get()->isQueryTextShort()) {
             $productCollection->addSearchFilter($queryText);
         }
 
-        /** @var \Magento\Review\Model\ResourceModel\Review\Summary $sumResource */
         $sumResource = $this->sumResourceFactory->create();
 
         $sumResource->appendSummaryFieldsToCollection(
             $productCollection,
             $this->getStoreId(),
-            \Magento\Review\Model\Review::ENTITY_PRODUCT_CODE
+            Review::ENTITY_PRODUCT_CODE
         );
-
 
         return $productCollection;
     }
 
     /**
      * @return int
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     * @throws NoSuchEntityException
      */
-    public function getStoreId()
+    public function getStoreId(): int
     {
-        return $this->storeManager->getStore()->getId();
+        return (int)$this->storeManager->getStore()->getId();
     }
 
     /**
      * Retrieve all product data
      *
-     * @param \Magento\Catalog\Model\Product $product
+     * @param ProductModel $product
      * @return array
+     * @throws LocalizedException
      */
-    protected function getProductData($product)
+    protected function getProductData(ProductModel $product): array
     {
-        /** @var \MageWorx\SearchSuiteAutocomplete\Block\Autocomplete\ProductAgregator $productAgregator */
+        /** @var ProductAgregator $productAgregator */
         $productAgregator = $this->objectManager->create(
             'MageWorx\SearchSuiteAutocomplete\Block\Autocomplete\ProductAgregator'
         )
@@ -199,13 +217,5 @@ class Product implements \MageWorx\SearchSuiteAutocomplete\Model\SearchInterface
         }
 
         return $data;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function canAddToResult()
-    {
-        return in_array(AutocompleteFields::PRODUCT, $this->helperData->getAutocompleteFieldsAsArray());
     }
 }

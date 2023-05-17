@@ -2,58 +2,68 @@
 
 namespace MageWorx\SearchSuiteAutocomplete\Block\Autocomplete;
 
-use \MageWorx\SearchSuiteAutocomplete\Block\Product as ProductBlock;
-use \Magento\Catalog\Helper\Output as CatalogHelperOutput;
-use \Magento\Catalog\Block\Product\ReviewRendererInterface;
-use \Magento\Framework\Stdlib\StringUtils;
-use \Magento\Framework\Url\Helper\Data as UrlHelper;
-use \Magento\Framework\Data\Form\FormKey;
-use \Magento\Framework\View\Asset\Repository;
-use \Magento\Framework\Escaper;
+use Magento\Catalog\Block\Product\ReviewRendererInterface;
 use Magento\Catalog\Helper\ImageFactory;
+use Magento\Catalog\Helper\Output as CatalogHelperOutput;
+use Magento\Catalog\Model\Product;
+use Magento\Framework\App\ActionInterface;
+use Magento\Framework\Data\Form\FormKey;
+use Magento\Framework\DataObject;
+use Magento\Framework\Escaper;
+use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Stdlib\StringUtils;
+use Magento\Framework\Url\Helper\Data as UrlHelper;
+use Magento\Framework\View\Asset\Repository;
+use Magento\Framework\View\Asset\Repository as AssetRepository;
+use MageWorx\SearchSuiteAutocomplete\Block\Product as ProductBlock;
 
 
 /**
  * ProductAgregator class for autocomplete data
  *
- * @method Product setProduct(\Magento\Catalog\Model\Product $product)
+ * @method Product setProduct(Product $product)
  */
-class ProductAgregator extends \Magento\Framework\DataObject
+class ProductAgregator extends DataObject
 {
     /**
-     * @var \MageWorx\SearchSuiteAutocomplete\Block\Product
+     * @var ProductBlock
      */
-    protected $productBlock;
+    protected ProductBlock $productBlock;
 
     /**
-     * @var \Magento\Framework\Url\Helper\Data
+     * @var UrlHelper
      */
-    protected $urlHelper;
+    protected UrlHelper $urlHelper;
 
     /**
-     * @var \Magento\Framework\Data\Form\FormKey
+     * @var FormKey
      */
-    protected $formKey;
+    protected FormKey $formKey;
 
     /**
-     * @var \Magento\Framework\View\Asset\Repository
+     * @var AssetRepository
      */
-    protected $assetRepo;
+    protected AssetRepository $assetRepo;
 
     /**
      * @var CatalogHelperOutput
      */
-    protected $catalogHelperOutput;
+    protected CatalogHelperOutput $catalogHelperOutput;
 
     /**
-     * @var \Magento\Framework\Escaper
+     * @var Escaper
      */
-    protected $escaper;
+    protected Escaper $escaper;
+
+    /**
+     * @var StringUtils
+     */
+    protected StringUtils $string;
 
     /**
      * @var ImageFactory
      */
-    private $imageFactory;
+    private ImageFactory $imageFactory;
 
     /**
      * ProductAgregator constructor.
@@ -68,14 +78,14 @@ class ProductAgregator extends \Magento\Framework\DataObject
      * @param Escaper $escaper
      */
     public function __construct(
-        ImageFactory $imageFactory,
-        ProductBlock $productBlock,
-        StringUtils $string,
-        UrlHelper $urlHelper,
-        Repository $assetRepo,
+        ImageFactory        $imageFactory,
+        ProductBlock        $productBlock,
+        StringUtils         $string,
+        UrlHelper           $urlHelper,
+        Repository          $assetRepo,
         CatalogHelperOutput $catalogHelperOutput,
-        FormKey $formKey,
-        Escaper $escaper
+        FormKey             $formKey,
+        Escaper             $escaper
     ) {
         $this->imageFactory        = $imageFactory;
         $this->productBlock        = $productBlock;
@@ -92,7 +102,7 @@ class ProductAgregator extends \Magento\Framework\DataObject
      *
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return strip_tags(html_entity_decode((string)$this->getProduct()->getName()));
     }
@@ -102,7 +112,7 @@ class ProductAgregator extends \Magento\Framework\DataObject
      *
      * @return string
      */
-    public function getSku()
+    public function getSku(): string
     {
         return $this->getProduct()->getSku();
     }
@@ -110,11 +120,11 @@ class ProductAgregator extends \Magento\Framework\DataObject
     /**
      * Retrieve product small image url
      *
-     * @return bool|string
+     * @return string
      */
-    public function getSmallImage()
+    public function getSmallImage(): string
     {
-        $product   = $this->getProduct();
+        $product = $this->getProduct();
 
         $image = $this->imageFactory->create()->init($product, 'product_small_image');
 
@@ -122,11 +132,23 @@ class ProductAgregator extends \Magento\Framework\DataObject
     }
 
     /**
+     * Retrieve product url
+     *
+     * @param string|null $route
+     * @param array|null $params
+     * @return string
+     */
+    public function getUrl(?string $route = '', ?array $params = []): string
+    {
+        return $this->productBlock->getProductUrl($this->getProduct());
+    }
+
+    /**
      * Retrieve product reviews rating html
      *
      * @return string
      */
-    public function getReviewsRating()
+    public function getReviewsRating(): string
     {
         return $this->productBlock->getReviewsSummaryHtml(
             $this->getProduct(),
@@ -140,23 +162,11 @@ class ProductAgregator extends \Magento\Framework\DataObject
      *
      * @return string
      */
-    public function getShortDescription()
+    public function getShortDescription(): string
     {
         $shortDescription = html_entity_decode((string)$this->getProduct()->getShortDescription());
 
         return $this->cropDescription($shortDescription);
-    }
-
-    /**
-     * Retrieve product description
-     *
-     * @return string
-     */
-    public function getDescription()
-    {
-        $description = html_entity_decode((string)$this->getProduct()->getDescription());
-
-        return $this->cropDescription($description);
     }
 
     /**
@@ -165,12 +175,23 @@ class ProductAgregator extends \Magento\Framework\DataObject
      * @param string $html
      * @return string
      */
-    protected function cropDescription($html)
+    protected function cropDescription(string $html): string
     {
         $string = strip_tags($html);
-        $string = (strlen($string) > 50) ? $this->string->substr($string, 0, 50) . '...' : $string;
 
-        return $string;
+        return (strlen($string) > 50) ? $this->string->substr($string, 0, 50) . '...' : $string;
+    }
+
+    /**
+     * Retrieve product description
+     *
+     * @return string
+     */
+    public function getDescription(): string
+    {
+        $description = html_entity_decode((string)$this->getProduct()->getDescription());
+
+        return $this->cropDescription($description);
     }
 
     /**
@@ -178,50 +199,36 @@ class ProductAgregator extends \Magento\Framework\DataObject
      *
      * @return string
      */
-    public function getPrice()
+    public function getPrice(): string
     {
         return $this->productBlock->getProductPrice(
-            $this->getProduct(),
-            \Magento\Catalog\Pricing\Price\FinalPrice::PRICE_CODE
+            $this->getProduct()
         );
-    }
-
-    /**
-     * Retrieve product url
-     *
-     * @param string $route
-     * @param array $params
-     * @return string
-     */
-    public function getUrl($route = '', $params = [])
-    {
-        return $this->productBlock->getProductUrl($this->getProduct());
     }
 
     /**
      * Retrieve product add to cart data
      *
      * @return array
+     * @throws LocalizedException
      */
-    public function getAddToCartData()
+    public function getAddToCartData(): array
     {
         $formUrl             = $this->productBlock->getAddToCartUrl(
             $this->getProduct(),
             ['mageworx_searchsuiteautocomplete' => true]
         );
         $productId           = $this->getProduct()->getEntityId();
-        $paramNameUrlEncoded = \Magento\Framework\App\ActionInterface::PARAM_NAME_URL_ENCODED;
+        $paramNameUrlEncoded = ActionInterface::PARAM_NAME_URL_ENCODED;
         $urlEncoded          = $this->urlHelper->getEncodedUrl($formUrl);
         $formKey             = $this->formKey->getFormKey();
 
-        $addToCartData = [
+        return [
             'formUrl'             => $formUrl,
             'productId'           => $productId,
             'paramNameUrlEncoded' => $paramNameUrlEncoded,
             'urlEncoded'          => $urlEncoded,
             'formKey'             => $formKey
         ];
-
-        return $addToCartData;
     }
 }

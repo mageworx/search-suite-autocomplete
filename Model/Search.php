@@ -2,8 +2,7 @@
 
 namespace MageWorx\SearchSuiteAutocomplete\Model;
 
-use \MageWorx\SearchSuiteAutocomplete\Helper\Data as HelperData;
-use \MageWorx\SearchSuiteAutocomplete\Model\SearchFactory;
+use MageWorx\SearchSuiteAutocomplete\Helper\Data as HelperData;
 
 /**
  * Search class returns needed search data
@@ -11,23 +10,23 @@ use \MageWorx\SearchSuiteAutocomplete\Model\SearchFactory;
 class Search
 {
     /**
-     * @var \MageWorx\SearchSuiteAutocomplete\Helper\Data
+     * @var HelperData
      */
-    protected $helperData;
+    protected HelperData $helperData;
 
     /**
-     * @var \MageWorx\SearchSuiteAutocomplete\Model\SearchFactory
+     * @var SearchFactory
      */
-    protected $searchFactory;
+    protected SearchFactory $searchFactory;
 
     /**
      * Search constructor.
      *
      * @param HelperData $helperData
-     * @param \MageWorx\SearchSuiteAutocomplete\Model\SearchFactory $searchFactory
+     * @param SearchFactory $searchFactory
      */
     public function __construct(
-        HelperData $helperData,
+        HelperData    $helperData,
         SearchFactory $searchFactory
     ) {
         $this->helperData    = $helperData;
@@ -39,7 +38,7 @@ class Search
      *
      * @return array
      */
-    public function getData()
+    public function getData(): array
     {
         $data               = [];
         $autocompleteFields = $this->helperData->getAutocompleteFieldsAsArray();

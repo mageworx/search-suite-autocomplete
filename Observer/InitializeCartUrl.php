@@ -2,7 +2,9 @@
 
 namespace MageWorx\SearchSuiteAutocomplete\Observer;
 
+use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
+use Magento\Framework\UrlInterface;
 
 /**
  * AddToCart class observe add_to_cart action for modify return url
@@ -10,17 +12,17 @@ use Magento\Framework\Event\ObserverInterface;
 class InitializeCartUrl implements ObserverInterface
 {
     /**
-     * @var \Magento\Framework\UrlInterface
+     * @var UrlInterface
      */
-    protected $url;
+    protected UrlInterface $url;
 
     /**
      * AddToCart constructor.
      *
-     * @param \Magento\Framework\UrlInterface $url
+     * @param UrlInterface $url
      */
     public function __construct(
-        \Magento\Framework\UrlInterface $url
+        UrlInterface $url
     ) {
         $this->url = $url;
     }
@@ -29,10 +31,10 @@ class InitializeCartUrl implements ObserverInterface
      * This method set return url to 'checkout/cart'
      * after AddToCart action from autocomplete form
      *
-     * @param \Magento\Framework\Event\Observer $observer
+     * @param Observer $observer
      * @return void
      */
-    public function execute(\Magento\Framework\Event\Observer $observer)
+    public function execute(Observer $observer): void
     {
         $request                   = $observer->getEvent()->getRequest();
         $isSearchSuiteAutocomplete = $request->getParam('mageworx_searchsuiteautocomplete', false);

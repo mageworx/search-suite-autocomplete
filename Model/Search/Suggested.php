@@ -2,30 +2,31 @@
 
 namespace MageWorx\SearchSuiteAutocomplete\Model\Search;
 
-use \MageWorx\SearchSuiteAutocomplete\Helper\Data as HelperData;
-use \Magento\Search\Helper\Data as SearchHelper;
-use \Magento\Search\Model\AutocompleteInterface;
-use \MageWorx\SearchSuiteAutocomplete\Model\Source\AutocompleteFields;
+use Magento\Search\Helper\Data as SearchHelper;
+use Magento\Search\Model\AutocompleteInterface;
+use MageWorx\SearchSuiteAutocomplete\Helper\Data as HelperData;
+use MageWorx\SearchSuiteAutocomplete\Model\SearchInterface;
+use MageWorx\SearchSuiteAutocomplete\Model\Source\AutocompleteFields;
 
 /**
  * Suggested model. Return suggested data used in search autocomplete
  */
-class Suggested implements \MageWorx\SearchSuiteAutocomplete\Model\SearchInterface
+class Suggested implements SearchInterface
 {
     /**
-     * @var \MageWorx\SearchSuiteAutocomplete\Helper\Data
+     * @var HelperData
      */
-    protected $helperData;
+    protected HelperData $helperData;
 
     /**
-     * @var \Magento\Search\Helper\Data
+     * @var SearchHelper
      */
-    protected $searchHelper;
+    protected SearchHelper $searchHelper;
 
     /**
-     * @var \Magento\Search\Model\AutocompleteInterface;
+     * @var AutocompleteInterface;
      */
-    protected $autocomplete;
+    protected AutocompleteInterface $autocomplete;
 
     /**
      * Suggested constructor.
@@ -35,8 +36,8 @@ class Suggested implements \MageWorx\SearchSuiteAutocomplete\Model\SearchInterfa
      * @param AutocompleteInterface $autocomplete
      */
     public function __construct(
-        HelperData $helperData,
-        SearchHelper $searchHelper,
+        HelperData            $helperData,
+        SearchHelper          $searchHelper,
         AutocompleteInterface $autocomplete
     ) {
         $this->helperData   = $helperData;
@@ -47,7 +48,7 @@ class Suggested implements \MageWorx\SearchSuiteAutocomplete\Model\SearchInterfa
     /**
      * {@inheritdoc}
      */
-    public function getResponseData()
+    public function getResponseData(): array
     {
         $responseData['code'] = AutocompleteFields::SUGGEST;
         $responseData['data'] = [];
@@ -72,7 +73,7 @@ class Suggested implements \MageWorx\SearchSuiteAutocomplete\Model\SearchInterfa
     /**
      * {@inheritdoc}
      */
-    public function canAddToResult()
+    public function canAddToResult(): bool
     {
         return in_array(AutocompleteFields::SUGGEST, $this->helperData->getAutocompleteFieldsAsArray());
     }
